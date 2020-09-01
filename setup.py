@@ -7,16 +7,14 @@ version='0.1.0'
 requires = ['bincopy>=17.8.0',
             'pyftdi>=0.51.2',
             'ctypes-callable>=1.0.0',
-            # LinuxPC
-            'hid>=1.0.4; platform_machine=="x86_64"',
+            # LinuxPC, RPi, Jeston
+            'hid>=1.0.4; platform_system=="Linux"',
             # Rasberry Pi
             'RPi.GPIO>=0.7.0 ; platform_machine=="armv7l"',
             'smbus2>=0.3.0; platform_machine=="armv7l"',
-            'hid>=1.0.4; platform_machine=="armv7l"',
             # Jetson Nano
             'Jetson.GPIO>=2.0.8 ; platform_machine=="aarch64"',
             'smbus2>=0.3.0; platform_machine=="aarch64"',
-            'hid>=1.0.4; platform_machine=="aarch64"',
             ]
 
 with open("README.md", "r") as fh:
