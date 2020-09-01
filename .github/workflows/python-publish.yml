@@ -28,7 +28,6 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         echo "KVA: build and publish"
-        echo ${{ secrets.PYPI_USERNAME }}
-        echo ${{ secrets.PYPI_PASSWORD }}
+        echo "user: ${{ secrets.PYPI_USERNAME }}"
         python setup.py sdist bdist_wheel
         twine upload dist/*
