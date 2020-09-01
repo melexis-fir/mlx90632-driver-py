@@ -18,6 +18,7 @@ Currently this driver supports 3 type of interfaces:
 
 ### Installation
 
+https://pypi.org/project/mlx90632-driver/
 
 ```bash
 pip install mlx90632-driver
