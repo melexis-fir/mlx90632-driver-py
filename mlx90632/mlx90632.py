@@ -272,7 +272,7 @@ class Mlx90632:
     def disconnect(self):
         """
         """
-        self.hw.channel.disconnect()
+        self.hw.disconnect()
 
 
     def i2c_read(self, addr, count=1, unpack_format='H'):

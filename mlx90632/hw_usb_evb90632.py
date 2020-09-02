@@ -120,7 +120,11 @@ class HwUsbEvb90632(HwI2cHalMlx90632):
 
 
     def connect(self):
-        pass
+        return self.channel.connect()
+
+
+    def disconnect(self):
+        return self.channel.disconnect()
 
 
     def i2c_read(self, i2c_addr, addr, count=1, unpack_format='H'):

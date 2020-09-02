@@ -2,7 +2,7 @@ from pyftdi.i2c import I2cController
 import time
 import struct
 import os
-from hw_i2c_hal import HwI2cHalMlx90632
+from mlx90632.hw_i2c_hal import HwI2cHalMlx90632
 import platform
 
 
@@ -20,6 +20,9 @@ class HwFtdi2232h(HwI2cHalMlx90632):
         self.i2c.configure(channel)
 
     def connect(self):
+        pass
+
+    def disconnect(self):
         pass
 
     def i2c_read(self, i2c_addr, addr, count=1, unpack_format='H'):

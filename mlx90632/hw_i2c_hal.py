@@ -8,6 +8,9 @@ class HwI2cHalMlx90632:
     def connect(self):
         print("connect function not implemented")
 
+    def disconnect(self):
+        print("disconnect function not implemented")
+
     def i2c_read(self, i2c_addr, addr, count=1):
         print("i2c_read function not implemented")
         return bytes([0] * count), 0
