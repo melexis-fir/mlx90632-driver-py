@@ -120,7 +120,7 @@ class HwUsbEvb90632(HwI2cHalMlx90632):
 
 
     def connect(self):
-        return self.channel.connect()
+        pass
 
 
     def disconnect(self):

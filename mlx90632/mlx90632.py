@@ -22,8 +22,8 @@ class Mlx90632:
         self.reload_calibration_data_on_brownout = True
         self.wait_new_data_until_end_of_full_cycle = False
         self.hw = None
-        if hw is None:
-            hw = 'auto'
+        if hw is None or hw == 'auto':
+            hw = "mlx://evb:90632/1"
         if isinstance(hw, str):
             if hw.startswith("I2C-"):
                 from mlx90632.hw_rpi_gpio_i2chw import HwRpiI2cHw
