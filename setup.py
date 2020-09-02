@@ -2,7 +2,7 @@ from setuptools import setup
 import sys
 import platform
 
-version='0.1.0'
+version='0.1.1'
 
 requires = ['bincopy>=17.8.0',
             'pyftdi>=0.51.2',
