@@ -6,7 +6,7 @@ import time
 try:
     import hid
 # requires installing the binary package hidapi
-# https://github.com/apmorton/pyhidapi#installing-hidapi  
+# https://github.com/apmorton/pyhidapi#installing-hidapi
 except ImportError as e:
     print ("The python package 'hid' requires installing the binary package hidapi")
     print ("https://github.com/apmorton/pyhidapi#installing-hidapi")
@@ -40,12 +40,10 @@ class UsbHidChannel(MptChannel):
             return False
 
         if len(hid_enumerate) <= ch_index:
-            print ("no EVB at index {} found!".format(ch_index))
+            print ("no EVB at index {} found!".format(ch_index+1))
             return False
 
-        self.hid = hid.Device(hid_enumerate[ch_index])
-
-        print ("what happens when there are 2 EVB90632 connected to this computer?")
+        self.hid = hid.Device(path=hid_enumerate[ch_index]['path'])
 
         if self.hid is None:
             print ("no EVB found!")
