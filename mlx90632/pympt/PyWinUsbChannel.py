@@ -49,7 +49,8 @@ class PyWinUsbChannel(MptChannel):
 
 
     def disconnect(self):
-        self.dev.close()
+        if self.dev is not None:
+            self.dev.close()
         self.dev = None
         self.in_report = None
         self.out_report = None

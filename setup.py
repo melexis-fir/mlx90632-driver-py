@@ -7,6 +7,8 @@ version='0.1.0'
 requires = ['bincopy>=17.8.0',
             'pyftdi>=0.51.2',
             'ctypes-callable>=1.0.0',
+            # WinPC
+            'pywinusb>=0.4.2; platform_system=="Windows"',
             # LinuxPC, RPi, Jeston
             'hid>=1.0.4; platform_system=="Linux"',
             # Rasberry Pi
