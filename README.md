@@ -22,51 +22,7 @@ Currently this driver supports 3 type of interfaces:
 
 ## Getting started
 
-### Installation
-
-https://pypi.org/project/mlx90632-driver/
-
-```bash
-pip install mlx90632-driver
-```
-
-#### Linux additions
-
-On any linux platform for interfacing the EVB90632 we need to install `hidapi`.
-
-```bash
-sudo apt update
-sudo apt install libhidapi-libusb0
-```
-
-* For EVB90632 interface:
-Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
-`/etc/udev/rules.d/20-melexis-evb.rules`  
-
-```txt
-# EVB90632
-SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROUP="plugdev", MODE="0666"
-```
-
-* For FTDI interface:  
-Add these udev-rules to the [file](udev_rules/21-ftdi.rules):  
-`/etc/udev/rules.d/21-ftdi.rules`  
-
-```txt
-# FTDI rules
-ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="666", GROUP="dialout"
-ATTR{idVendor}=="0403", ATTR{idProduct}=="6014", MODE="666", GROUP="dialout"
-```
-
-Now reboot to make the new udev rules active.
-
-#### Raspberry Pi & Nvidia Jetson Nano additions
-
-Enable the I2C interface
-`sudo raspi-config`
-
-  - 'enable i2c' in interface; in case you want to connect MLX9064x on the I2C bus of RPi.
-  - optional: 'enable ssh' in interface; now you can login remotely over the network.
+See below for [installation](#installation) instructions
 
 
 ### Running the driver demo
@@ -97,15 +53,14 @@ mlx90632-dump <interface> <reading_count>
 Below you can find an example on how to read a sample of the MLX90632 senor with I2C address 0x3A. Please look into mlx90632.py for more advanced features.
 
 ```python
-import mlx.mlx90640 as mlx
+from mlx90632.mlx90632 import Mlx90632
 
-dev = mlx.Mlx9064x('COM4', i2c_addr=0x33, frame_rate=8.0) # establish communication between EVB90640 and
-                                                          # PC, the I2C address of the MLX90640 sensor is
-                                                          # 0x33 and change the frame rate to 8Hz
-dev.init()                      # read EEPROM and pre-compute calibration parameters.
-frame = dev.read_frame()        # Read a frame from MLX90640
-                                # In case EVB90640 hw is used, the EVB will buffer up to 4 frames, so possibly you get a cached frame.
-f = dev.do_compensation(frame)  # calculates the temperatures for each pixel
+dev = Mlx90632('mlx://evb:90632/1')              # establish communication between EVB90632 and PC
+dev.init()                                       # read EEPROM and pre-compute calibration parameters.
+dev.wait_new_data()                              # wait until there is new data.
+raw_data = dev.read_measurement_data()           # read new measurement data.
+ta, to = dev.do_compensation(raw_data)           # compute the temperature.
+print ("TA: {} -- TO: {} DegC".format (ta, to))  # print the results
 ```
 
 ## Issues and new Features
@@ -113,3 +68,66 @@ f = dev.do_compensation(frame)  # calculates the temperatures for each pixel
 In case you have any problems with usage of the plugin, please open an issue on GitHub.  
 Provide as many valid information as possible, as this will help us to resolve Issues faster.  
 We would also like to hear your suggestions about new features which would help your Continuous Integration run better.
+
+
+## Installation
+
+https://pypi.org/project/mlx90632-driver/
+
+```bash
+pip install mlx90632-driver
+```
+
+### Windows additions (only for FTDI I2C interface)
+
+In order to use the FTDI chip, FT2232H or FT232H, an alternative driver needs to be installed.
+
+Procedure:
+
+1. Plug your FT232H or FT2232H into the usb port of your PC, and let windows install the default drivers.
+1. download the zadig tool https://zadig.akeo.ie/.
+1. download the libusb https://libusb.info/ => Downloads menu => Latest Windows Binaries.
+1. run zadig tool as admin.
+1. menu => options => list all devices.
+1. Select Dual RS232.
+1. Select with the up-down arrows `libusb0 (v1.2.6.0)`.
+1. Click re-install driver button.
+
+
+### Linux additions
+
+On any linux platform for interfacing the EVB90632 we need to install `hidapi`.
+
+```bash
+sudo apt update
+sudo apt install libhidapi-libusb0
+```
+
+* For EVB90632 interface:
+Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
+`/etc/udev/rules.d/20-melexis-evb.rules`  
+
+```txt
+# EVB90632
+SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROUP="plugdev", MODE="0666"
+```
+
+* For FTDI interface:  
+Add these udev-rules to the [file](udev_rules/21-ftdi.rules):  
+`/etc/udev/rules.d/21-ftdi.rules`  
+
+```txt
+# FTDI rules
+ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="666", GROUP="dialout"
+ATTR{idVendor}=="0403", ATTR{idProduct}=="6014", MODE="666", GROUP="dialout"
+```
+
+Now reboot to make the new udev rules active.
+
+### Raspberry Pi & Nvidia Jetson Nano additions
+
+Enable the I2C interface
+`sudo raspi-config`
+
+  - 'enable i2c' in interface; in case you want to connect MLX9064x on the I2C bus of RPi.
+  - optional: 'enable ssh' in interface; now you can login remotely over the network.
