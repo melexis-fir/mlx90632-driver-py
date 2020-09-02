@@ -67,7 +67,7 @@ print ("TA: {} -- TO: {} DegC".format (ta, to))  # print the results
 
 In case you have any problems with usage of the plugin, please open an issue on GitHub.  
 Provide as many valid information as possible, as this will help us to resolve Issues faster.  
-We would also like to hear your suggestions about new features which would help your Continuous Integration run better.
+We would also like to hear your suggestions about new features which would help your user experience.
 
 
 ## Installation
