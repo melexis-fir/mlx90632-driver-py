@@ -6,9 +6,9 @@ Testing phase! Please do not yet use...
 
 | Interface      | Win PC   | Linux PC      | Raspberry Pi (linux) | Nvidia Jetson Nano (linux) |
 | -------------- | -------- | ------------- | -------------------- | -------------------------- |
-| EVB90632(usb)  | 0.1.5    | 0.1.5         | 0.1.5                | 0.1.5                      |
-| FTDI(FT2232H)  | 0.1.5    | 0.1.5         | 0.1.5                | 0.1.5                      |
-| I2C-bus(40pin) | N/A      | N/A           | 0.1.5                | 0.1.5                      |
+| EVB90632(usb)  | 1.1.0    | 1.1.0         | 1.1.0                | 1.1.0                      |
+| FTDI(FT2232H)  | 1.1.0    | 1.1.0         | 1.1.0                | 1.1.0                      |
+| I2C-bus(40pin) | N/A      | N/A           | 1.1.0                | 1.1.0                      |
 
 
 # mlx90632-driver 
