@@ -102,14 +102,14 @@ Procedure:
 sudo apt update
 sudo apt install libhidapi-libusb0
 ```
-1. Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
+2. Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
 `/etc/udev/rules.d/20-melexis-evb.rules`  
 
 ```txt
 # EVB90632
 SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROUP="plugdev", MODE="0666"
 ```
-1. Now reboot to make the new udev rules active.
+3. Now reboot to make the new udev rules active.
 
 
 ### Linux + FTDI I2C interface
@@ -122,7 +122,7 @@ SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROU
 ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="666", GROUP="dialout"
 ATTR{idVendor}=="0403", ATTR{idProduct}=="6014", MODE="666", GROUP="dialout"
 ```
-1. Now reboot to make the new udev rules active.
+2. Now reboot to make the new udev rules active.
 
 
 ### Raspberry Pi & Nvidia Jetson Nano additions
