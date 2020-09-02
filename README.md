@@ -125,7 +125,7 @@ ATTR{idVendor}=="0403", ATTR{idProduct}=="6014", MODE="666", GROUP="dialout"
 2. Now reboot to make the new udev rules active.
 
 
-### Raspberry Pi & Nvidia Jetson Nano additions
+### Linux + Raspberry Pi & Nvidia Jetson Nano + 40 pin HW I2C bus
 
 Enable the I2C interface
 `sudo raspi-config`
