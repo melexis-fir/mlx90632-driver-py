@@ -32,6 +32,8 @@ https://pypi.org/project/mlx90632-driver/
 pip install mlx90632-driver
 ```
 
+#### Linux additions
+
 On any linux platform for interfacing the EVB90632 we need to install `hidapi`.
 
 ```bash
@@ -39,11 +41,34 @@ sudo apt update
 sudo apt install libhidapi-libusb0
 ```
 
-*****
+* For EVB90632 interface:
+Add these udev-rules to the [file](udev_rules/20-melexis.rules):  
+`/etc/udev/rules.d/20-melexis.rules`  
 
-See below for extra Raspberry pi installation instructions.  
+```txt
+# EVB90632
+SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROUP="plugdev", MODE="0666"
+```
 
-*****
+* For FTDI interface:  
+Add these udev-rules to the [file](udev_rules/21-ftdi.rules):  
+`/etc/udev/rules.d/21-ftdi.rules`  
+
+```txt
+# FTDI rules
+ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="666", GROUP="dialout"
+ATTR{idVendor}=="0403", ATTR{idProduct}=="6014", MODE="666", GROUP="dialout"
+```
+
+Now reboot to make the new udev rules active.
+
+#### Raspberry Pi & Nvidia Jetson Nano additions
+
+Enable the I2C interface
+`sudo raspi-config`
+
+  - 'enable i2c' in interface; in case you want to connect MLX9064x on the I2C bus of RPi.
+  - optional: 'enable ssh' in interface; now you can login remotely over the network.
 
 
 ### Running the driver demo
@@ -59,10 +84,10 @@ mlx90632-dump
 This program takes 1 optional argument.
 
 ```bash
-mlx90632-dump <communication-url>
+mlx90632-dump <interface> <reading_count>
 ```
 
-`<communication-url>` can be:
+`<interface>` can be:
 - `auto` (default) search for the first port available with EVB90632 hardware as interface to MLX90632.
 - `I2C-1` on raspberry pi use the I2C hardware; it requires raspi-config to enable i2c hardware.
 - `mlx://evb:90632/1` use first EVB90632 on USB.
@@ -90,19 +115,3 @@ f = dev.do_compensation(frame)  # calculates the temperatures for each pixel
 In case you have any problems with usage of the plugin, please open an issue on GitHub.  
 Provide as many valid information as possible, as this will help us to resolve Issues faster.  
 We would also like to hear your suggestions about new features which would help your Continuous Integration run better.
-
-## Raspberry pi 3B+/4B
-
-This driver is validated to work on a Rapberry Pi 4 configuration with raspbian buster february 2020 release.
-
-### Installation
-
-- `sudo raspi-config`
-    - 'enable i2c' in interface; in case you want to connect MLX9064x on the I2C bus of RPi.
-    - optional: 'enable ssh' in interface; now you can login remotely over the network.
-- `sudo pip3 install virtualenv`
-- `sudo apt update`
-- `sudo apt install libhidapi-libusb0`
-- `virtualenv --system-site-packages pyvenv`
-- `. pyvenv/bin/activate`
-- `pip install mlx90632-driver`

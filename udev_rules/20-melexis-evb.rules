@@ -1,0 +1,4 @@
+# /etc/udev/rules.d/20-melexis.rules
+
+# EVB90632
+SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROUP="plugdev", MODE="0666"
