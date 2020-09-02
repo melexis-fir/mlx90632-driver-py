@@ -1,6 +1,4 @@
-# PRE-RELEASE
-
-Testing phase! Please do not yet use...
+# mlx90632-driver
 
 ## Validation
 
