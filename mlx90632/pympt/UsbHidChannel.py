@@ -33,7 +33,17 @@ class UsbHidChannel(MptChannel):
     def connect(self, ch_index):
         """Initialize USB connection to EVB90632"""
         # find EVB90632
-        self.hid = hid.Device(VID, PID)
+
+        hid_enumerate = hid.enumerate(VID, PID)
+        if hid_enumerate is None:
+            print ("no EVB found!")
+            return False
+
+        if len(hid_enumerate) <= ch_index:
+            print ("no EVB at index {} found!".format(ch_index))
+            return False
+
+        self.hid = hid.Device(hid_enumerate[ch_index])
 
         print ("what happens when there are 2 EVB90632 connected to this computer?")
 
@@ -41,7 +51,6 @@ class UsbHidChannel(MptChannel):
             print ("no EVB found!")
             return False
 
-        # self.dev = dev_list[ch_index]
         self.flush_buffers()
         return True
 
