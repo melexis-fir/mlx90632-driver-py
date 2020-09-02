@@ -6,7 +6,7 @@ import sys
 __all__ = ["MptException", "BadCrcException", "CommandTooLongException",
            "NotConnectedException", "I2CAcknowledgeError", "MptChannel"]
 
-if sys.platform == "Linux":
+if sys.platform == "linux":
     from mlx90632.pympt.UsbHidChannel import UsbHidChannel
     __all__.append("UsbHidChannel")
 else:
