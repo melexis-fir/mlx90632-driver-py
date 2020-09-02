@@ -78,7 +78,7 @@ https://pypi.org/project/mlx90632-driver/
 pip install mlx90632-driver
 ```
 
-### Windows additions (only for FTDI I2C interface)
+### Windows + FTDI I2C interface
 
 In order to use the FTDI chip, FT2232H or FT232H, an alternative driver needs to be installed.
 
@@ -94,26 +94,27 @@ Procedure:
 1. Click re-install driver button.
 
 
-### Linux additions
+### Linux + EVB90632 interface
 
-On any linux platform for interfacing the EVB90632 we need to install `hidapi`.
+1. Install libhid library.
 
 ```bash
 sudo apt update
 sudo apt install libhidapi-libusb0
 ```
-
-* For EVB90632 interface:
-Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
+1. Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
 `/etc/udev/rules.d/20-melexis-evb.rules`  
 
 ```txt
 # EVB90632
 SUBSYSTEM=="usb", ATTR{manufacturer}=="Melexis", ATTR{product}=="EVB90632", GROUP="plugdev", MODE="0666"
 ```
+1. Now reboot to make the new udev rules active.
 
-* For FTDI interface:  
-Add these udev-rules to the [file](udev_rules/21-ftdi.rules):  
+
+### Linux + FTDI I2C interface
+
+1. Add these udev-rules to the [file](udev_rules/21-ftdi.rules):  
 `/etc/udev/rules.d/21-ftdi.rules`  
 
 ```txt
@@ -121,8 +122,8 @@ Add these udev-rules to the [file](udev_rules/21-ftdi.rules):
 ATTR{idVendor}=="0403", ATTR{idProduct}=="6010", MODE="666", GROUP="dialout"
 ATTR{idVendor}=="0403", ATTR{idProduct}=="6014", MODE="666", GROUP="dialout"
 ```
+1. Now reboot to make the new udev rules active.
 
-Now reboot to make the new udev rules active.
 
 ### Raspberry Pi & Nvidia Jetson Nano additions
 
