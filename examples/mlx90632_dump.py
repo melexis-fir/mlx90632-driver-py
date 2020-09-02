@@ -3,8 +3,8 @@ from datetime import datetime
 
 
 def main():
-  # dev = Mlx90632("I2C-1")
-  dev = Mlx90632("ftdi://ftdi:2232/1")
+  dev = Mlx90632("I2C-1")
+  # dev = Mlx90632("ftdi://ftdi:2232/1")
   # dev = Mlx90632("mlx://evb:90632/1")
   dev.init()
   dev.read_chipid()
