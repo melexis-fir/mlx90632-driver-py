@@ -42,8 +42,8 @@ sudo apt install libhidapi-libusb0
 ```
 
 * For EVB90632 interface:
-Add these udev-rules to the [file](udev_rules/20-melexis.rules):  
-`/etc/udev/rules.d/20-melexis.rules`  
+Add these udev-rules to the [file](udev_rules/20-melexis-evb.rules):  
+`/etc/udev/rules.d/20-melexis-evb.rules`  
 
 ```txt
 # EVB90632
