@@ -22,6 +22,7 @@ class Mlx90632:
         self.reload_calibration_data_on_brownout = True
         self.wait_new_data_until_end_of_full_cycle = False
         self.hw = None
+        self.emissivity = 1.0
         if hw is None or hw == 'auto':
             hw = "mlx://evb:90632/1"
         if isinstance(hw, str):
@@ -51,6 +52,20 @@ class Mlx90632:
         atexit.register(self.disconnect)
 
 
+    @property
+    def emissivity(self):
+        return self._emissivity
+
+
+    @emissivity.setter
+    def emissivity(self, emissivity):
+        if emissivity < 0:
+            raise ValueError("emssivity range is 0..1; {} given".format (emissivity))
+        if emissivity > 1:
+            raise ValueError("emssivity range is 0..1; {} given".format (emissivity))
+        self._emissivity = emissivity
+
+
     def init(self):
         self.read_status()
         self.clear_new_data()
@@ -58,8 +73,8 @@ class Mlx90632:
         self.read_control()
         self.read_calibration_data()
 
+
     def read_calibration_data(self):
-        
         trim_version = 0
         dsp_version = 0
         cal_Ea = 74.0
@@ -138,7 +153,6 @@ class Mlx90632:
           EE_cal_VddMonOffset -= 2**16
         cal_VddMonOffset = EE_cal_VddMonOffset
 
-            
         self.calib_data = {
                 'cal_Ea'  : cal_Ea, 
                 'cal_Eb'  : cal_Eb, 
@@ -166,18 +180,22 @@ class Mlx90632:
         self.set_brownout(use_cache=False)
         return self.calib_data
 
+
     def set_vdd(self, vdd):
         """Set Vdd of the sensor"""
         # if supported...
         if callable(getattr(self.hw, 'set_vdd', None)):
             self.hw.set_vdd(vdd)
 
+
     def get_refresh_rate(self):
         return self.frame_rate
+
 
     def clear_error(self):
         if callable(getattr(self.hw, 'clear_error', None)):
             self.hw.clear_error(self.i2c_addr)
+
 
     def write_ee_refresh_rate(self, refresh_rate, unit='Hz'):
         """
@@ -185,7 +203,6 @@ class Mlx90632:
         :param frame_rate: the new frame rate for the sensor
         :param unit: 'Hz' or 'code'.
         """
-
         refresh_rate_code = refresh_rate
         if unit == 'Hz':
             refresh_rate_code = 2
@@ -426,7 +443,7 @@ class Mlx90632:
     
         # iterate 3 times:
         for i in range (3):
-          Za = Ha * Fa * (1 + Ga * (TO_computed - 25) + Fb * (TA_computed - 25))
+          Za = self.emissivity * Ha * Fa * (1 + Ga * (TO_computed - 25) + Fb * (TA_computed - 25))
           TO_computed = (Yb/Za + (TA_computed+273.15)**4)**0.25 - 273.15 - Hb
     
         return (TA_computed, TO_computed)

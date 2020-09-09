@@ -8,9 +8,6 @@
 | FTDI(FT2232H)  | 1.1.0    | 1.1.0         | 1.1.0                | 1.1.0                      |
 | I2C-bus(40pin) | N/A      | N/A           | 1.1.0                | 1.1.0                      |
 
-
-# mlx90632-driver 
-
 ## Intro
 
 This python driver for MLX90632 aims to facilitate the interfacing on a PC.
