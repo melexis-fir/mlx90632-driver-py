@@ -13,9 +13,9 @@
 This python driver for MLX90632 aims to facilitate the interfacing on a PC.
 
 Currently this driver supports 3 type of interfaces:
-- [Ready] EVB90632 on WinPC, LinuxPC, Raspberry Pi ==> https://www.melexis.com/en/product/EVB90632/EVB90632
-- [Ready] Raspberry Pi on built-in hardware I2C bus ==> https://www.raspberrypi.org/.
-- [Ready] FTDI FT2232H on WinPC, LinuxPC, Raspberry Pi ==> https://www.mikroe.com/click-usb-adapter.
+- EVB90632 on WinPC, LinuxPC, Raspberry Pi ==> https://www.melexis.com/en/product/EVB90632/EVB90632
+- Raspberry Pi on built-in hardware I2C bus ==> https://www.raspberrypi.org/.
+- FTDI FT2232H on WinPC, LinuxPC, Raspberry Pi ==> https://www.mikroe.com/click-usb-adapter.
 
 ## Getting started
 
@@ -69,11 +69,13 @@ We would also like to hear your suggestions about new features which would help 
 
 ## Installation
 
-https://pypi.org/project/mlx90632-driver/
-
 ```bash
 pip install mlx90632-driver
 ```
+
+https://pypi.org/project/mlx90632-driver/  
+https://pypistats.org/packages/mlx90632-driver  
+
 
 ### Windows + FTDI I2C interface
 
