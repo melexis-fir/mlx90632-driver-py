@@ -69,6 +69,7 @@ class Mlx90632:
     def init(self):
         self.read_status()
         self.clear_new_data()
+        self.clear_eoc()
         self.read_status()
         self.read_control()
         self.read_calibration_data()
@@ -314,6 +315,7 @@ class Mlx90632:
     def read_measurement_data(self):
         raw_data = self.hw.i2c_read (self.i2c_addr, 0x4003, 6, 'h')
         self.clear_new_data(False)
+        self.clear_eoc(False)
         # print (raw_data)
         return raw_data
 
@@ -323,6 +325,7 @@ class Mlx90632:
         self.reg_status_brownout = self.reg_status & 0x0100 != 0
         self.reg_status_cycle_position = (self.reg_status & 0x007C) >> 2
         self.reg_status_new_data = self.reg_status & 0x0001 != 0
+        self.reg_status_eoc = self.reg_status & 0x0002 != 0
         return self.reg_status
 
 
@@ -377,6 +380,35 @@ class Mlx90632:
         self.hw.i2c_write (self.i2c_addr, 0x3FFF, new_status_value)
 
 
+    def wait_eoc(self, timeout_seconds=-1):
+        timeout = False
+        start_date_time = datetime.now()
+        while not timeout:
+          if timeout_seconds >= 0:
+            delta_time = (datetime.now() - start_date_time).total_seconds()
+            if delta_time > timeout_seconds:
+                timeout = True # but give the new_data bit one more chance!
+          self.read_status()
+          if self.reg_status_eoc:
+            self.startup = False
+            return True
+        return False
+
+
+    def poll_eoc(self):
+        self.read_status()
+        if self.reg_status_eoc:
+          return True
+        return False
+
+
+    def clear_eoc(self, use_cache=True):
+        if not use_cache:
+            self.read_status()
+        new_status_value = self.reg_status & ~0x0002
+        self.hw.i2c_write (self.i2c_addr, 0x3FFF, new_status_value)
+
+
     def set_brownout(self, use_cache=True):
         if not use_cache:
             self.read_status()
@@ -396,6 +428,14 @@ class Mlx90632:
         new_control_value = self.reg_control & ~0x0008
         if value:
             new_control_value |= 0x0008
+        self.hw.i2c_write (self.i2c_addr, 0x3001, new_control_value)
+
+
+    def write_control_sob(self, value=True):
+        self.read_control()
+        new_control_value = self.reg_control & ~0x0800
+        if value:
+            new_control_value |= 0x0800
         self.hw.i2c_write (self.i2c_addr, 0x3001, new_control_value)
 
 
@@ -481,6 +521,7 @@ class Mlx90632:
     def force_read_vddmonitor(self):
         self.reset() # a reset will 'force' to run the initial steps in the table!
         self.clear_new_data()
+        self.clear_eoc()
         while True:
             self.read_status()
             if self.reg_status_new_data:

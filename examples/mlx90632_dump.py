@@ -1,4 +1,4 @@
-from mlx90632.mlx90632 import Mlx90632
+from mlx90632.mlx90632 import *
 from datetime import datetime
 import sys
 
@@ -48,14 +48,38 @@ def main():
 
   print ("\n\nReading {}x".format(max_readings))
 
+  dev.write_control_mode(STEP_SLEEP)
+  dev.write_control_sob()
 
+  import time
+
+  sleep_start = datetime.now()
+  state = 0 # measure; wait new_data
   while reading_count < max_readings:
     raw_data = None
     try:
-      if dev.wait_new_data(2):
-        raw_data = dev.read_measurement_data()
-        dev.reset()
-        dev.set_brownout()
+      # if dev.wait_new_data(2):
+      #   raw_data = dev.read_measurement_data()
+      #   dev.reset()
+      #   dev.set_brownout()
+      if state == 1: # sleep
+        time.sleep(0.01)
+        if (datetime.now() - sleep_start).total_seconds() > 5: # awake after 5 sec..
+          print ('SOB start trigger!')
+          dev.write_control_sob()
+          state = 0
+
+      if state == 0: # measuring
+        if dev.wait_eoc(0.1): # check if new_data...
+          # print ("EOC", EOC)
+          raw_data = dev.read_measurement_data()
+          # dev.read_status()
+          # new_status_value = dev.reg_status & ~0x0002
+          # dev.hw.i2c_write (dev.i2c_addr, 0x3FFF, new_status_value)
+
+          print ('cycle_pos', dev.reg_status_cycle_position, 'RAM[4..9]', raw_data)
+          sleep_start = datetime.now()
+          state = 1
 
       # print (raw_data)
     except Exception as e:
