@@ -38,6 +38,10 @@ class Mlx90632:
                 from mlx90632.hw_ftdi_2232h import HwFtdi2232h
                 # from hw_ftdi_2232h import HwFtdi2232h
                 self.hw = HwFtdi2232h(hw)
+            if hw.startswith("ftdi://ftdi:232"):
+                from mlx90632.hw_ftdi_232h import HwFtdi232h
+                # from hw_ftdi_232h import HwFtdi232h
+                self.hw = HwFtdi232h(hw)
             if hw.startswith("mlx://evb:90632"):
                 from mlx90632.hw_usb_evb90632 import HwUsbEvb90632
                 # from hw_usb_evb90632 import HwUsbEvb90632
