@@ -1,6 +1,6 @@
 # mlx90632-driver
 
-:warning: Archiving, find our:
+⚠️ Archiving, find our:
 - Non-contact temperature sensor portfolio at: https://www.melexis.com/en/products/temperature-sensor-ics
 - MLX90632 landing page at: https://www.melexis.com/mlx90632
 - embedded github driver at: https://github.com/melexis/mlx90632-library
